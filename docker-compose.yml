@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+
+  database:
+    image: postgres:alpine
+    restart: always
+    volumes:
+      - ./volumes/database:/var/lib/postgresql/data
+    env_file:
+      - config.env
+
+  cache:
+    image: redis:alpine
+    restart: always
+
+  app:
+    build: overrides
+    image: nextcloud:fpm-alpine
+    restart: always
+    volumes:
+      - ./volumes/nextcloud/data:/var/www/html/data
+      - ./volumes/nextcloud/config:/var/www/html/config
+      - ./volumes/nextcloud/themes:/var/www/html/themes
+      - ./volumes/nextcloud/apps:/var/www/html/custom_apps
+      - ./volumes/nextcloud/web:/var/www/html
+    environment:
+      - POSTGRES_HOST=database
+      - REDIS_HOST=cache
+    env_file:
+      - config.env
+    depends_on:
+      - database
+      - cache
+
+  proxy:
+    image: caddy:alpine
+    restart: always
+    volumes:
+      - ./volumes/caddy/data:/data
+      - ./volumes/caddy/config:/config
+      - ./volumes/nextcloud/web:/var/www/html
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - 80:80
+      - 443:443
