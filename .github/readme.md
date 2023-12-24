@@ -8,6 +8,9 @@
 - Easy to use
 - Modular
 
+> [!IMPORTANT]  
+> Do not open issues without first reading the entirety of this readme, especially [the FAQ](#faq)
+
 ## `config/config.env`
 
 ```env
@@ -46,11 +49,47 @@ Included in the git repo is a dockerfile that will override the standard image t
 
 ## FAQ
 
+### I want to use a different storage location
+
+**Solution:** In `docker-compose.yml` under `app` and `volumes` replace `./volumes/nextcloud/data:/var/www/html/data` with `/path/to/data:/var/www/html/data`.
+***The second part after the colon should always be the same***
+
+---
+
 ### I have warnings in the admin panel
 
 There are a few warnings you will get with the default install using this configuration.
 
-- `The reverse proxy header configuration is incorrect. This is a security issue and can allow an attacker to spoof their IP address as visible to the Nextcloud.`
+---
 
-- `The database is missing some indexes. Due to the fact that adding indexes on big tables could take some time they were not added automatically.`
-- `Your installation has no default phone region set.`
+#### The reverse proxy header configuration is incorrect. This is a security issue and can allow an attacker to spoof their IP address as visible to the Nextcloud
+
+**Solution:** Add `'trusted_proxies' => array('localhost'),` to `volumes/nextcloud/config/config.php`.
+
+---
+
+#### The database is missing some indexes. Due to the fact that adding indexes on big tables could take some time they were not added automatically
+
+**Solution:** Run `bash config/fixIndexes.sh`
+
+---
+
+#### Your installation has no default phone region set
+
+**Solution:** Add `'default_phone_region' => 'US',` to `volumes/nextcloud/config/config.php`. Replace `US` with your country's [ISO 3166-1 Alpha-2 code](https://en.wikipedia.org/wiki/ISO_3166-1#Codes)
+
+---
+
+#### You are accessing your instance over a secure connection, however your instance is generating insecure URLs
+
+**Solution:** Add `'overwriteprotocol' => 'https',` to `volumes/nextcloud/config/config.php`.
+
+---
+
+#### `X` error(s) in the logs since `Y`
+
+**Solution:** With a proper setup, this should resolve itself over time.
+
+#### You have not set or verified your email server configuration, yet
+
+**Solution:** Setup and send the test email ([NextCloud Email Documentation](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/email_configuration.html))
