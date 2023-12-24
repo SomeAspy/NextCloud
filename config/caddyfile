@@ -14,10 +14,9 @@ localhost:80 {
 		path /tests/*
 	}
 	respond @forbidden 404
-
 	header Strict-Transport-Security max-age=15552000
 	file_server
-	root * ./volumes/nextcloud/web
+	root * /var/www/html
 	php_fastcgi unix//system/fpm.sock
 	redir /.well-known/carddav /remote.php/dav 301
 	redir /.well-known/caldav /remote.php/dav 301

@@ -7,14 +7,14 @@ services:
     volumes:
       - ./volumes/database:/var/lib/postgresql/data
     env_file:
-      - config.env
+      - config/config.env
 
   cache:
     image: redis:alpine
     restart: always
 
   app:
-    build: overrides
+    build: config
     image: nextcloud:fpm-alpine
     restart: always
     volumes:
@@ -23,11 +23,13 @@ services:
       - ./volumes/nextcloud/themes:/var/www/html/themes
       - ./volumes/nextcloud/apps:/var/www/html/custom_apps
       - ./volumes/nextcloud/web:/var/www/html
+      - ./volumes/system:/var/run
+      - ./config/php-fpm.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
     environment:
       - POSTGRES_HOST=database
       - REDIS_HOST=cache
     env_file:
-      - config.env
+      - config/config.env
     depends_on:
       - database
       - cache
@@ -36,10 +38,10 @@ services:
     image: caddy:alpine
     restart: always
     volumes:
-      - ./volumes/caddy/data:/data
+      - ./volumes/caddy/data:/datav
       - ./volumes/caddy/config:/config
+      - ./config/caddyfile:/etc/caddy/Caddyfile
+      - ./volumes/system:/system
       - ./volumes/nextcloud/web:/var/www/html
-      - ./Caddyfile:/etc/caddy/Caddyfile
     ports:
       - 80:80
-      - 443:443
