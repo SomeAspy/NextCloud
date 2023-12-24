@@ -1,2 +1,2 @@
-#!/bin/bash
-docker exec -it nextcloud-app-1 /bin/sh
+#!/bin/sh
+docker compose exec app /bin/sh

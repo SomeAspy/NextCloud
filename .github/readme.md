@@ -39,6 +39,7 @@ PHP_MEMORY_LIMIT=4096M
 - `fixIndexes.sh` - Fixes `The database is missing some indexes.`
 - `maintenanceOff.sh` - Disables maintenance mode. (This commonly auto-enables after updates)
 - `shell.sh` - Access the docker container's shell
+- `update.sh` - Pull and build images
 
 ## Adding to the base image
 
