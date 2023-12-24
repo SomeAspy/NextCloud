@@ -1,4 +1,4 @@
-localhost:80 {
+:80 {
 	@forbidden {
 		path /.htaccess
 		path /.xml
