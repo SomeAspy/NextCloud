@@ -111,7 +111,7 @@ There are a few warnings you will get with the default install using this config
 
 #### `X` error(s) in the logs since `Y`
 
-**Solution:** With a proper setup, this should resolve itself over time.
+**Solution:** With a proper setup, this should resolve itself over time, and if it does not, you can check `Administration>Logging`.
 
 #### You have not set or verified your email server configuration, yet
 
