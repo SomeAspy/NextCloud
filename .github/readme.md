@@ -39,6 +39,9 @@ POSTGRES_USER=nextcloud
 # PHP
 PHP_MEMORY_LIMIT=4096M
 
+# PROXY
+SERVE_PORT=80
+
 # Environment docs: https://hub.docker.com/_/nextcloud
 ```
 
