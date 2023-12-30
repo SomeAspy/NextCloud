@@ -7,7 +7,7 @@ services:
     volumes:
       - ./volumes/database:/var/lib/postgresql/data
     env_file:
-      - config/config.env
+      - .env
 
   cache:
     image: redis:alpine
@@ -18,21 +18,22 @@ services:
     image: nextcloud:fpm-alpine
     restart: always
     volumes:
-      - ./volumes/nextcloud/data:/var/www/html/data
-      - ./volumes/nextcloud/config:/var/www/html/config
-      - ./volumes/nextcloud/themes:/var/www/html/themes
-      - ./volumes/nextcloud/apps:/var/www/html/custom_apps
-      - ./volumes/nextcloud/web:/var/www/html
+      - ${DATA_VOLUME}:/var/www/html/data
+      - ${CONFIG_VOLUME}:/var/www/html/config
+      - ${THEME_VOLUME}:/var/www/html/themes
+      - ${APP_VOLUME}:/var/www/html/custom_apps
+      - ${WEB_VOLUME}:/var/www/html
       - ./volumes/system:/var/run
       - ./config/php-fpm.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./config/php.ini:/usr/local/etc/php/conf.d/zz-docker.ini
     environment:
       - POSTGRES_HOST=database
       - REDIS_HOST=cache
-    env_file:
-      - config/config.env
     depends_on:
       - database
       - cache
+    env_file:
+      - .env
 
   proxy:
     image: caddy:alpine
@@ -42,6 +43,22 @@ services:
       - ./volumes/caddy/config:/config
       - ./config/caddyfile:/etc/caddy/Caddyfile
       - ./volumes/system:/system
-      - ./volumes/nextcloud/web:/var/www/html
+      - ${WEB_VOLUME}:/var/www/html
     ports:
       - 80:80
+    depends_on:
+      - app
+
+  scheduler:
+    image: nextcloud:fpm-alpine
+    restart: always
+    volumes:
+      - ${DATA_VOLUME}:/var/www/html/data
+      - ${CONFIG_VOLUME}:/var/www/html/config
+      - ${THEME_VOLUME}:/var/www/html/themes
+      - ${APP_VOLUME}:/var/www/html/custom_apps
+      - ${WEB_VOLUME}:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - database
+      - cache

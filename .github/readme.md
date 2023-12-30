@@ -9,9 +9,9 @@
 - Modular
 
 > [!IMPORTANT]  
-> Do not open issues without first reading the entirety of this readme, especially [the FAQ](#faq)
+> Do not open issues without first reading the entirety of this readme, especially [the FAQ](#faq). You should also consider checking [the NextCloud docs](https://docs.nextcloud.com/server/latest/admin_manual/)
 
-## `config/config.env`
+## `.env`
 
 ```env
 ### YOU SHOULD CHANGE THE FOLLOWING CONFIGS ###
@@ -24,6 +24,14 @@ POSTGRES_PASSWORD=$0m3_R@nd0m_$+r1ng
 
 ### CONFIGS BELOW THIS LINE WILL WORK BY DEFAULT ###
 
+# Volume locations
+
+DATA_VOLUME=./volumes/nextcloud/data
+CONFIG_VOLUME=./volumes/nextcloud/config
+THEME_VOLUME=./volumes/nextcloud/themes
+APP_VOLUME=./volumes/nextcloud/apps
+WEB_VOLUME=./volumes/nextcloud/web
+
 # Database
 POSTGRES_DB=nextcloud
 POSTGRES_USER=nextcloud
@@ -33,6 +41,13 @@ PHP_MEMORY_LIMIT=4096M
 
 # Environment docs: https://hub.docker.com/_/nextcloud
 ```
+
+## Post Install
+
+After the first run, you should do the following:
+
+- In `Administration>Basic Settings` you should set `Background jobs` to run using `Cron (Recommended)`. This will ensure background tasks will run regardless of the frontend being used.
+- In `Administration>Overview` you should review all error and warnings under `Security & setup warnings`. You can view how to fix some common ones in the [warnings FAQ](#i-have-warnings-in-the-admin-panel). The default install generally will have some issues.
 
 ## Included Scripts
 
@@ -56,6 +71,10 @@ Included in the git repo is a dockerfile that will override the standard image t
 ***The second part after the colon should always be the same***
 
 ---
+
+### I get warnings from docker saying `x variable is not set.`
+
+**Solution:** Ensure you copied `example.env` to `.env` in the head of the repository and looked over the config.
 
 ### I have warnings in the admin panel
 
