@@ -110,6 +110,10 @@ There are a few warnings you will get with the default install using this config
 
 **Solution:** Add `'overwriteprotocol' => 'https',` to `volumes/nextcloud/config/config.php`.
 
+#### Server has no maintenance window start time configured
+
+**Solution:** Add `'maintenance_window_start' => 1,` to `volumes/nextcloud/config/config.php`. Set this to a time that is best for you. [Documentation](https://docs.nextcloud.com/server/28/admin_manual/configuration_server/background_jobs_configuration.html)
+
 #### `X` error(s) in the logs since `Y`
 
 **Solution:** With a proper setup, this should resolve itself over time, and if it does not, you can check `Administration>Logging`.
