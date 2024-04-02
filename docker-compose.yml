@@ -9,7 +9,7 @@ services:
       - .env
 
   cache:
-    image: redis:alpine
+    image: ghcr.io/dragonflydb/dragonfly
     restart: always
 
   app:

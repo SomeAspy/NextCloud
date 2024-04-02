@@ -11,7 +11,9 @@
 > [!IMPORTANT]  
 > Do not open issues without first reading the entirety of this readme, especially [the FAQ](#faq). You should also consider checking [the NextCloud docs](https://docs.nextcloud.com/server/latest/admin_manual/)
 
-## `.env`
+## `example.env`
+
+> This is an example file and it will not be read. You should copy it to `.env` and make applicable changes there.
 
 ```env
 ### YOU SHOULD CHANGE THE FOLLOWING CONFIGS ###
@@ -69,6 +71,8 @@ Included in the git repo is a dockerfile that will override the standard image t
 ## Notable Changes
 
 - Config files are only applied at container start. This is an optimization from the [NextCloud tuning guide.](https://docs.nextcloud.com/server/latest/admin_manual/installation/server_tuning.html#tune-php-fpm) (Specifically `opcache.revalidate_freq = 0` in [the `php.ini` file](../config/php.ini))
+
+- Instead of using Redis for caching, [Dragonfly](https://github.com/dragonflydb/dragonfly) is used.
 
 ## FAQ
 
