@@ -100,7 +100,7 @@ There are a few warnings you will get with the default install using this config
 
 #### The reverse proxy header configuration is incorrect. This is a security issue and can allow an attacker to spoof their IP address as visible to the Nextcloud
 
-**Solution:** Add `'trusted_proxies' => array('localhost'),` to `volumes/nextcloud/config/config.php`.
+**Solution:** Add `'trusted_proxies' => array('127.0.0.1/32'),` to `volumes/nextcloud/config/config.php`.
 
 #### The database is missing some indexes. Due to the fact that adding indexes on big tables could take some time they were not added automatically
 
