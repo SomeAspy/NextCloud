@@ -1,0 +1,5 @@
+# Host Caddy File (typically /etc/caddy/caddyfile)
+
+example.com {
+    reverse_proxy localhost:3030
+}

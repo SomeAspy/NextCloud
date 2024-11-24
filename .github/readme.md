@@ -18,7 +18,7 @@
 ```env
 ### YOU SHOULD CHANGE THE FOLLOWING CONFIGS ###
 
-# Trusted Domains (The domains NextCloud will be accessed from)
+# NextCloud Domains (The domains NextCloud will be accessed from as a space separated list.)
 NEXTCLOUD_TRUSTED_DOMAINS=localhost
 
 # Database Password
@@ -41,10 +41,17 @@ POSTGRES_USER=nextcloud
 # PHP
 PHP_MEMORY_LIMIT=4096M
 
-# PROXY
-SERVE_PORT=80
+# Binding address
+# 0.0.0.0:80 will bind to all addresses on port 80 (HTTP)
+# 127.0.0.1:3030 will bind to localhost only, on port 3030 - useful for reverse proxies
+SERVE_PORT=0.0.0.0:80
 
-# Environment docs: https://hub.docker.com/_/nextcloud
+# Protocol (either HTTP, HTTPS or blank for autodetect)
+# Use 'HTTPS' if something else is handling HTTPS for instance (Like a reverse proxy)
+OVERWRITEPROTOCOL=
+
+# Environment docs: https://github.com/docker-library/docs/blob/master/nextcloud/README.md
+
 ```
 
 ## Post Install
@@ -56,8 +63,10 @@ After the first run, you should do the following:
 
 ## Included Scripts
 
+- `execute.sh` - Runs commands inside the NextCloud image with proper permissions (Usage: `bash execute.sh occ`, `occ` being the command you want to run)
 - `fixIndexes.sh` - Fixes `The database is missing some indexes.`
 - `maintenanceOff.sh` - Disables maintenance mode. (This commonly auto-enables after updates)
+- `migrateMimeTypes.sh` - Fixes `One or more mimetype migrations are available.`
 - `shell.sh` - Access the docker container's shell
 - `update.sh` - Pull and build images
 
@@ -98,13 +107,13 @@ Included in the git repo is a dockerfile that will override the standard image t
 
 There are a few warnings you will get with the default install using this configuration.
 
-#### The reverse proxy header configuration is incorrect. This is a security issue and can allow an attacker to spoof their IP address as visible to the Nextcloud
-
-**Solution:** Add `'trusted_proxies' => array('127.0.0.1/32'),` to `volumes/nextcloud/config/config.php`.
-
 #### The database is missing some indexes. Due to the fact that adding indexes on big tables could take some time they were not added automatically
 
-**Solution:** Run `bash config/fixIndexes.sh`
+**Solution:** Run `bash scripts/fixIndexes.sh`
+
+#### One or more mimetype migrations are available
+
+**Solution:** Run `bash scripts/migrateMimeTypes.sh`
 
 #### Your installation has no default phone region set
 
