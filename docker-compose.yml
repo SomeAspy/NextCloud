@@ -38,7 +38,7 @@ services:
     image: caddy:alpine
     restart: always
     volumes:
-      - ./volumes/caddy/data:/datav
+      - ./volumes/caddy/data:/data
       - ./volumes/caddy/config:/config
       - ./config/caddyfile:/etc/caddy/Caddyfile
       - ./volumes/system:/system
