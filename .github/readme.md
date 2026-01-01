@@ -1,3 +1,6 @@
+# Outdated, does not work cleanly with latest nextcloud
+I don't use NextCloud for my server anymore. I switched to SeaFile because I only needed sync and it was much more performant.
+
 # EZ NextCloud
 
 > NextCloud Config I use for my server
