@@ -142,3 +142,32 @@ There are a few warnings you will get with the default install using this config
 #### You have not set or verified your email server configuration, yet
 
 **Solution:** Setup and send the test email ([NextCloud Email Documentation](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/email_configuration.html))
+
+### Database authentication fails
+
+<details>
+<summary>How this error might look?</summary>
+<br>
+May look like that
+
+```
+database-1  | 2024-10-15 04:01:10.971 UTC [33] DETAIL:  Connection matched file "/var/lib/postgresql/data/pg_hba.conf" line 128: "host all all all scram-sha-256"
+database-1  | 2024-10-15 04:01:10.984 UTC [34] FATAL:  password authentication failed for user "nextcloud"
+```
+</details>
+
+**Solution:** You'll have to login to psql CLI, to modify password by hand. Here are the list of commands you should execute
+
+> [!WARNING]
+> Make sure you __know what you're doing!__ Try to make your own research on given commands before proceeding. You're basically stepping on thin ice
+
+1. `docker container ls` - Find your __`postgres:alpine`__ container, copy ID, may look like that > `2d861c20f1ce`
+2. `docker exec -it [your_instance_id] bash` - Enter into the terminal of your container - Remember to replace `[your_instance_id]` from step above
+
+We're now in Bash of your docker container. Run following
+
+3. `psql -U nextcloud` - Will open Postgresql Nextcloud shell
+4. `\password` - Will execute password change modem. Enter twice same password
+5. Safely exit psql, and docker container, by typing `exit` command twice (in psql it should end with `;`)
+
+Afterwards go back to your install screen, and enter new details including your fresly set password.
